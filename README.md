@@ -151,7 +151,7 @@ Released under the MIT License — see [`LICENSE`](LICENSE).
 See [`CITATION.cff`](CITATION.cff), or cite the thesis directly:
 
 ```bibtex
-@phdthesis{fayi2026revst,
+@phdthesis{fayi2026thesis,
   title  = {Blockchain-Based Reputation and Trust Management for Vehicular Computation Offloading},
   author = {Fayi, Sharifah},
   school = {University of Sussex},
