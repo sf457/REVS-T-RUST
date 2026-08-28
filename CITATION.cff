@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the thesis below."
+title: "REVS-T with RUST: Trust Framework for Vehicular Computation Offloading (simulation code)"
+type: software
+authors:
+  - family-names: Fayi
+    given-names: Sharifah
+    # orcid: "https://orcid.org/<FILL>"
+    # affiliation: "<FILL institution>"
+version: "1.0.0"
+date-released: "2026-06-12"   # frozen result date; adjust to the public-release date
+license: MIT
+# repository-code: "https://github.com/<FILL-owner>/<FILL-repo>"   # add only after the repo is public
+keywords:
+  - vehicular edge computing
+  - computation offloading
+  - trust and reputation
+  - subjective logic
+  - consortium blockchain
+  - provider selection
+preferred-citation:
+  type: thesis
+  title: "<FILL thesis title>"
+  authors:
+    - family-names: Fayi
+      given-names: Sharifah
+  thesis-type: "PhD thesis"
+  institution:
+    name: "<FILL institution>"
+  year: 2026
+# Associated papers (uncomment / complete if you want them cited alongside):
+# references:
+#   - type: conference-paper
+#     title: "<REVS VTC 2025 paper title>"
+#     authors:
+#       - family-names: Fayi
+#         given-names: Sharifah
+#       - family-names: Ayaz
+#         given-names: Ferheen
+#       - family-names: Sheng
+#         given-names: Zhengguo
+#     year: 2025
+#   - type: conference-paper
+#     title: "<REVS-T camera-ready conference paper title>"
+#     year: 2026
