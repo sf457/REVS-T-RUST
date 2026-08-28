@@ -1,7 +1,7 @@
 # REVS-T with RUST — Trust Framework for Vehicular Computation Offloading
 
 MATLAB reference implementation of the integrated trust framework presented in
-the thesis *"<Blockchain-Based Reputation and Trust Management for Vehicular Computation Offloading>"*. The framework combines:
+the thesis *"Blockchain-Based Reputation and Trust Management for Vehicular Computation Offloading"*. The framework combines:
 
 - **REVS** — ST-levels based, credential-aware provider initialisation and selection.
 - **RUST** — a Reputation and Uncertainty-aware Subjective-logic update mechanism
