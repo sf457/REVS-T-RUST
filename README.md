@@ -50,7 +50,14 @@ thirdparty/
 results_frozen/               Frozen result sets behind the thesis (SHA-256 checked).
 docs/                         Provenance, notation, workflow notes.
 archive/                      Superseded/experimental material (not part of results).
+revs-coldstart/               Chapter 3 REVS cold-start study (self-contained;
+                              MainAlgorithm.mlx, own myFunctions/ and +bc/).
 ```
+
+The RUST / REVS-T integrated code lives at the repository root (`run_baseline_comparison.m`,
+`config/`, `src/`). The Chapter 3 **REVS cold-start** study is a separate, self-contained
+component under `revs-coldstart/` with its own `MainAlgorithm.mlx`, `myFunctions/` and `+bc/`
+(these differ from the root versions — see `revs-coldstart/README.md`).
 
 ## Requirements
 
@@ -100,7 +107,7 @@ files remain canonical.
 
 | Thesis item | Backing frozen file | Regenerate with |
 |---|---|---|
-| Ch 3 REVS (cold-start, 7 ST scenarios) | `revs_coldstart_selection_frozen_2025-01.xlsx` | REVS component (separate) |
+| Ch 3 REVS (cold-start, 7 ST scenarios) | `revs_coldstart_selection_frozen_2025-01.xlsx` | `revs-coldstart/MainAlgorithm.mlx` |
 | Ch 4 minimal single-threshold (7 models) | `revst_ch4_minimal-threshold_frozen_2026-06-12.csv` | `run_baseline_comparison` |
 | Ch 4 / Ch 5 aggregate (13 models, all attacks) | `revst_full_allattacks_moderate-xu_frozen_2026-06-12.csv` | `run_baseline_comparison` |
 | Ch 5 per-seed / Wilcoxon (13×10 seeds) | `revst_full_allattacks_perseed_frozen_2026-06-12.csv` | `run_baseline_comparison` |
