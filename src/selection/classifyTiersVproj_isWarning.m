@@ -40,25 +40,11 @@ function [activeMask, tierInfo] = classifyTiersVproj_isWarning(CandidateVproj)
     if n == 0
         activeMask = false(1, 0);
         tierInfo = struct('goodMask', false(1,0), 'warningMask', false(1,0), ...
-                          'shadowMask', false(1,0), 'activeMask', false(1,0));
+                          'activeMask', false(1,0));
         return;
     end
 
     reputations = [CandidateVproj.reputation];
-
-    % --- Shadow demotion (opt-in via Params.useBlacklistShadow) ---
-    % Same logic as classifyTiersVproj. Providers with prior blackout
-    % history are demoted to Warning regardless of governance flag.
-    shadowMask = false(1, n);
-    if isfield(p,'useBlacklistShadow') && p.useBlacklistShadow
-        for i = 1:n
-            if isfield(CandidateVproj(i), 'totalBlacklists') && ...
-               ~isempty(CandidateVproj(i).totalBlacklists) && ...
-               double(CandidateVproj(i).totalBlacklists) > 0
-                shadowMask(i) = true;
-            end
-        end
-    end
 
     % --- Tier classification by isWarning flag ---
     % If isWarning field is missing on a candidate (e.g., a model that
@@ -75,8 +61,8 @@ function [activeMask, tierInfo] = classifyTiersVproj_isWarning(CandidateVproj)
         end
     end
 
-    goodMask    = ~warningFlags & ~shadowMask;
-    warningMask = warningFlags | shadowMask;
+    goodMask    = ~warningFlags;
+    warningMask = warningFlags;
 
     % --- Strict tier preference: Good if any exist, else Warning fallback ---
     if any(goodMask)
@@ -88,5 +74,5 @@ function [activeMask, tierInfo] = classifyTiersVproj_isWarning(CandidateVproj)
     end
 
     tierInfo = struct('goodMask', goodMask, 'warningMask', warningMask, ...
-                      'shadowMask', shadowMask, 'activeMask', activeMask);
+                      'activeMask', activeMask);
 end

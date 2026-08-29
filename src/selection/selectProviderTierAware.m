@@ -34,26 +34,9 @@ function [SVpro, Trust_scores] = selectProviderTierAware( ...
         return;
     end
 
-    % Post-blackout shadow (opt-in via Params.useBlacklistShadow): force
-    % providers with totalBlacklists>0 into the Warning-tier fallback
-    % group regardless of their R. They remain selectable but never get
-    % full Good-tier priority again.
-    p = Params();
-    useShadow = isfield(p,'useBlacklistShadow') && p.useBlacklistShadow;
-    shadowMask = false(1, numCandidates);
-    if useShadow
-        for i = 1:numCandidates
-            if isfield(CandidateVproj(i), 'totalBlacklists') && ...
-               ~isempty(CandidateVproj(i).totalBlacklists) && ...
-               double(CandidateVproj(i).totalBlacklists) > 0
-                shadowMask(i) = true;
-            end
-        end
-    end
-
     % 3) Strict tier preference: good-tier first, warning-tier only as fallback
-    goodMask    = baseMask & (reputations > R_warn) & ~shadowMask;
-    warningMask = baseMask & (reputations >= R_min) & ((reputations <= R_warn) | shadowMask);
+    goodMask    = baseMask & (reputations > R_warn);
+    warningMask = baseMask & (reputations >= R_min) & (reputations <= R_warn);
 
     if any(goodMask)
         activeMask = goodMask;
@@ -74,30 +57,11 @@ function [SVpro, Trust_scores] = selectProviderTierAware( ...
         normStayTimes(validIdx) = validStayTimes / maxST;
     end
 
-    % Optional: streak penalty inside the active tier. Reads warningStreak
-    % from each candidate; applies a graduated score reduction so
-    % providers with recent failures lose priority within the tier
-    % without being excluded entirely.
-    useStreakPenalty = isfield(p,'useStreakPenalty') && p.useStreakPenalty;
-    if useStreakPenalty
-        streakPenaltyWeight = p.streakPenaltyWeight;
-        streakVals = zeros(1, numCandidates);
-        for i = 1:numCandidates
-            if isfield(CandidateVproj(i), 'warningStreak') && ...
-               ~isempty(CandidateVproj(i).warningStreak)
-                streakVals(i) = max(0, double(CandidateVproj(i).warningStreak));
-            end
-        end
-        streakPenalty = streakVals * streakPenaltyWeight;
-    else
-        streakPenalty = zeros(1, numCandidates);
-    end
-
-    % 5) Compute scores (no penalty — tier exclusion handles it)
+    % 5) Compute scores (tier exclusion handles penalties)
     Trust_scores = nan(1, numCandidates);
     for i = 1:numCandidates
         if activeMask(i)
-            Trust_scores(i) = w1 * reputations(i) + w2 * normStayTimes(i) - streakPenalty(i);
+            Trust_scores(i) = w1 * reputations(i) + w2 * normStayTimes(i);
         end
     end
 

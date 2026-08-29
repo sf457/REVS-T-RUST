@@ -13,10 +13,9 @@ function [activeMask, tierInfo] = classifyTiersVproj(CandidateVproj)
 % Output structure:
 %   activeMask    : logical (1 x n) — providers selectable THIS round
 %                   (= goodMask if any Good-tier, else warningMask)
-%   tierInfo      : struct with all four masks (for logging / diagnostics):
-%     .goodMask     : R > R_warn AND not shadowed  → Good-tier candidates
-%     .warningMask  : R <= R_warn OR shadowed       → Warning-tier candidates
-%     .shadowMask   : totalBlacklists > 0 (if Shadow on) → demoted candidates
+%   tierInfo      : struct with the tier masks (for logging / diagnostics):
+%     .goodMask     : R > R_warn   → Good-tier candidates
+%     .warningMask  : R <= R_warn  → Warning-tier candidates
 %     .activeMask   : same as the returned activeMask (mirror)
 %
 % Only activeMask drives selection. The other masks are for visibility.
@@ -33,32 +32,17 @@ function [activeMask, tierInfo] = classifyTiersVproj(CandidateVproj)
     if n == 0
         activeMask = false(1, 0);
         tierInfo = struct('goodMask', false(1,0), 'warningMask', false(1,0), ...
-                          'shadowMask', false(1,0), 'activeMask', false(1,0));
+                          'activeMask', false(1,0));
         return;
     end
 
     reputations = [CandidateVproj.reputation];
 
-    % --- Shadow demotion (opt-in via Params.useBlacklistShadow) ---
-    % Providers with prior blackout history get demoted to Warning tier
-    % regardless of their current R. They remain selectable but never get
-    % Good-tier priority again.
-    shadowMask = false(1, n);
-    if isfield(p,'useBlacklistShadow') && p.useBlacklistShadow
-        for i = 1:n
-            if isfield(CandidateVproj(i), 'totalBlacklists') && ...
-               ~isempty(CandidateVproj(i).totalBlacklists) && ...
-               double(CandidateVproj(i).totalBlacklists) > 0
-                shadowMask(i) = true;
-            end
-        end
-    end
-
     % --- Tier classification ---
     % goodMask    : standard high-trust providers
-    % warningMask : low-trust OR shadowed providers (fallback pool)
-    goodMask    = (reputations > R_warn) & ~shadowMask;
-    warningMask = (reputations <= R_warn) | shadowMask;
+    % warningMask : low-trust providers (fallback pool)
+    goodMask    = (reputations > R_warn);
+    warningMask = (reputations <= R_warn);
 
     % --- Strict tier preference: Good if any exist, else Warning fallback ---
     if any(goodMask)
@@ -70,5 +54,5 @@ function [activeMask, tierInfo] = classifyTiersVproj(CandidateVproj)
     end
 
     tierInfo = struct('goodMask', goodMask, 'warningMask', warningMask, ...
-                      'shadowMask', shadowMask, 'activeMask', activeMask);
+                      'activeMask', activeMask);
 end

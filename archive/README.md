@@ -15,6 +15,7 @@ None of these feed the frozen thesis results:
 | `sensitivityState.m` | `myFunctions/` | orphan helper for `run_sensitivity_audit` (script not in repo) |
 | `mine.m`, `mine2.m` | `+bc/` | proof-of-work mining; never invoked |
 | `Workarea.m` | `+bc/` | scratch/demo script, 0 callers |
+| `assertBonusRates.m` | `src/support/` | diagnostic guard (checks live DH bonus rates on client+workers); never called in the release pipeline |
 
 ## Note on the clean base
 The public base (`journal`) was already curated, so the draft/temp/debug material

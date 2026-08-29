@@ -11,12 +11,11 @@ function [SVpro, Trust_scores] = selectVproj(CandidateVproj, Vreqi, tierInfo)
 % argmax — tier classification is upstream in classifyTiersVproj.
 %
 % Score:
-%   Trust_score(i) = w1 * R(i) + w2 * normStayTime(i) - streakPenalty(i)
+%   Trust_score(i) = w1 * R(i) + w2 * normStayTime(i)
 %
 % Where:
 %   - w1, w2 from Params (reputation vs stay-time weighting)
 %   - normStayTime = stayTime / max(stayTime within active tier)
-%   - streakPenalty = warningStreak * streakPenaltyWeight (opt-in)
 %
 % Inputs:
 %   CandidateVproj : from fetchVehicles2_clean
@@ -60,22 +59,11 @@ function [SVpro, Trust_scores] = selectVproj(CandidateVproj, Vreqi, tierInfo)
         normStayTimes(validIdx) = stayTimes(validIdx) / maxST;
     end
 
-    % --- Optional: streak penalty (opt-in via Params.useStreakPenalty) ---
-    streakPenalty = zeros(1, n);
-    if isfield(p,'useStreakPenalty') && p.useStreakPenalty
-        for i = 1:n
-            if isfield(CandidateVproj(i), 'warningStreak') && ...
-               ~isempty(CandidateVproj(i).warningStreak)
-                streakPenalty(i) = max(0, double(CandidateVproj(i).warningStreak)) * p.streakPenaltyWeight;
-            end
-        end
-    end
-
     % --- Score active tier ---
     reputations = [CandidateVproj.reputation];
     for i = 1:n
         if validMask(i)
-            Trust_scores(i) = w1*reputations(i) + w2*normStayTimes(i) - streakPenalty(i);
+            Trust_scores(i) = w1*reputations(i) + w2*normStayTimes(i);
         end
     end
 

@@ -9,24 +9,6 @@ classdef simulationUtils
             Vreqi, VprojSet, scenarioName, seed, model, selection, config, ucbCounters)
             % RUNSIMULATIONWITHSELECTION Run one interaction with specified selection mechanism
 
-            % Selection-affecting Params flags are set EXPLICITLY based on
-            % the model name suffix on every call. We do NOT save-and-restore:
-            % that pattern leaks when a stale worker process holds a non-
-            % default persistent state from a prior session (e.g. earlier
-            % shadow-rule smoke run). Explicit-set guarantees the worker's
-            % Params matches the model's intent for this iteration.
-            modelKey = upper(string(model));
-            wantShadow      = any(strcmp(modelKey, ["RUST_V2_SHADOW","RUST_SHADOW","REVST_SHADOW","RUST_V2_BOTH","RUST_BOTH"]));
-            wantStreak      = any(strcmp(modelKey, ["RUST_V2_STREAK","RUST_STREAK","REVST_STREAK","RUST_V2_BOTH","RUST_BOTH"]));
-            wantStaticExpect = any(strcmp(modelKey, ["RUST_V2_STATICEXPECT","RUST_STATICEXPECT","REVST_STATICEXPECT"]));
-            wantExtGrace    = any(strcmp(modelKey, ["RUST_V2_EXTGRACE","RUST_EXTGRACE","REVST_EXTGRACE"]));
-            pTmp = Params();
-            pTmp.useBlacklistShadow  = wantShadow;
-            pTmp.useStreakPenalty    = wantStreak;
-            pTmp.useStaticExpectation = wantStaticExpect;
-            pTmp.useExtendedGrace    = wantExtGrace;
-            Params(pTmp);
-
             useBaselineSelection = simulationUtils.isBaselineModel(model);
 
             % Get selection policy from config (default: use SmartContract default = StrictTier)
@@ -252,17 +234,7 @@ classdef simulationUtils
             % CLEAN STATE: Only journal models (12 models)
             switch upper(model)
                 % === RUST VARIANTS (all use computeReputationRUST) ===
-                case {'RUST_V2', 'REVST', ...
-                      'RUST_V2_SHADOW', 'RUST_SHADOW', 'REVST_SHADOW', ...
-                      'RUST_V2_STREAK', 'RUST_STREAK', 'REVST_STREAK', ...
-                      'RUST_V2_BOTH', 'RUST_BOTH', ...
-                      'RUST_V2_STATICEXPECT', 'RUST_STATICEXPECT', 'REVST_STATICEXPECT', ...
-                      'RUST_V2_EXTGRACE', 'RUST_EXTGRACE', 'REVST_EXTGRACE'}
-                    % SHADOW/STREAK/BOTH variants share the RUST_V2 R-update
-                    % path. Their selection-time flags are already set by
-                    % runSimulationWithSelection above; the only difference
-                    % vs the baseline is what selectProviderTierAware
-                    % reads from Params() at selection time.
+                case {'RUST_V2', 'REVST'}
                     [updatedRep, isActive, isWarning, warningStreak, blackoutCounter, SVpro] = ...
                         computeReputationRUST(SVpro, runIndex, Updated_Vreqi, blockchainObj, globalRatio, scenarioName);
 

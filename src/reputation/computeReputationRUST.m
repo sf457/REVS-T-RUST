@@ -478,60 +478,13 @@ function [subjectiveOpinion, updated_alpha, updated_beta, updated_gamma, metrics
     %   3. First failure (for this requester)
     %   4. Has prior success (proven track record - prevents gaming)
     %   5. Not already governed (warning/blackout/inactive)
-    %
-    % useExtendedGrace (opt-in via Params): drops condition 2 (HIGH-ST),
-    % so first-failure-w/prior-success forgiveness applies to all ST
-    % levels. The hasPriorSuccess gate continues to block attackers
-    % regardless of ST. Tested via RUST_V2_ExtGrace model variant.
-    useExtGrace = isfield(params,'useExtendedGrace') && params.useExtendedGrace;
-    if useExtGrace
-        useGrace = (~offloading_success) && ...
-                   isFirstFailure && hasPriorSuccess && notAlreadyGoverned;
-    else
-        useGrace = (~offloading_success) && isHighST && ...
-                   isFirstFailure && hasPriorSuccess && notAlreadyGoverned;
-    end
+    useGrace = (~offloading_success) && isHighST && ...
+               isFirstFailure && hasPriorSuccess && notAlreadyGoverned;
 
     % =========================================================
     % EVIDENCE MAPPING
     % =========================================================
-    useStaticExpect = isfield(params,'useStaticExpectation') && params.useStaticExpectation;
-
-    if useStaticExpect
-        % STATIC EXPECTATION routing (ST-conditional, no streak/H bonuses).
-        % Success: HIGH expected -> alpha; INT/LOW unexpected -> gamma.
-        % Failure: grace gate (HIGH first-failure-w/prior-success) -> gamma;
-        %          INT failure -> gamma (uncertain by symmetry);
-        %          LOW failure expected -> beta;
-        %          HIGH non-grace failure -> beta.
-        if offloading_success
-            if isHighST
-                da = 1; db = 0; dg = 0;
-                rule = "succHighStatic";
-            elseif strcmpi(st, "intermediate")
-                da = 0; db = 0; dg = 1;
-                rule = "succIntStatic";
-            else  % low or unknown
-                da = 0; db = 0; dg = 1;
-                rule = "succLowStatic";
-            end
-        elseif useGrace
-            da = 0; db = 0; dg = 1;
-            rule = "graceFirstFailHighStatic";
-        else
-            if isHighST
-                da = 0; db = 1; dg = 0;
-                rule = "failHighStatic";
-            elseif strcmpi(st, "intermediate")
-                da = 0; db = 0; dg = 1;   % symmetric INT -> gamma
-                rule = "failIntStatic";
-            else
-                da = 0; db = 1; dg = 0;
-                rule = "failLowStatic";
-            end
-        end
-
-    elseif ~params.useDynamicHonesty
+    if ~params.useDynamicHonesty
         % NoDH mode: binary routing, no H-conditional ambiguity, no grace
         if offloading_success
             da = 1; db = 0; dg = 0;

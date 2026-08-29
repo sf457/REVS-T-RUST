@@ -184,22 +184,6 @@ function P = localDefaults()
     % Set to false for fair comparison (SimpleAvg and Beta don't use recommendations)
     P.useRecommendations = true;  % true = enable, false = disable for all models
     P.useDynamicHonesty = true;   % true = DH routing, false = binary (success→α++, failure→β++)
-    % Post-blackout shadow: when true, providers with totalBlacklists>0
-    % are demoted to the Warning-tier fallback group in StrictTier
-    % selection regardless of their R. They remain selectable via the
-    % fallback rule only, never via the Good-tier preference round.
-    % Default false (preserves current baseline behavior). Tested in
-    % run_smoke_shadow.m as an opt-in mitigation for malicious re-
-    % selection after the blackout cooldown elapses.
-    P.useBlacklistShadow = false;
-    % Streak penalty inside the Good tier: when true, the StrictTier
-    % score is reduced by streakPenaltyWeight * warningStreak for each
-    % candidate, so providers with recent failures lose priority within
-    % the Good tier without being excluded. Default off (preserves
-    % current ranking). Softer than useBlacklistShadow because it does
-    % not demote providers across tiers; it only tie-breaks within tier.
-    P.useStreakPenalty       = false;
-    P.streakPenaltyWeight    = 0.05;   % score units per warningStreak unit
     % Opt-in switch to the refactored selection trio:
     %   fetchVehicles2_clean + classifyTiersVproj + selectVproj
     % Replaces the legacy fetchCandidatePool + filterAndSortCandidates +
@@ -217,19 +201,6 @@ function P = localDefaults()
     % flag (carries warningStreak history) rather than the
     % instantaneous R > R_warn test.
     P.useIsWarningTier       = false;
-    % Static-expectation evidence routing: ST-conditional alpha/beta/gamma
-    % mapping instead of Dynamic Honesty bonus-based H. Off by default.
-    % When true: HIGH success -> alpha, INT/LOW success -> gamma, HIGH
-    % first-failure-w/prior-success -> grace gamma, INT failure -> gamma
-    % (symmetric uncertainty), LOW/HIGH non-grace failure -> beta.
-    P.useStaticExpectation   = false;
-    % Extended grace: remove the isHighST restriction from the grace
-    % 5-gate so first-failure-w/prior-success forgiveness applies to
-    % all ST levels, not just HIGH. The other four gate conditions
-    % (failure, isFirstFailure, hasPriorSuccess, notAlreadyGoverned)
-    % stay in place — the hasPriorSuccess check is what prevents
-    % attackers from exploiting the forgiveness.
-    P.useExtendedGrace       = false;
 
     % Beta Reputation System (Model 2) parameters
     P.betaUniformPrior = true;  % Start with α=1, β=1 (uniform prior)
