@@ -8,7 +8,7 @@ authors:
     orcid: "https://orcid.org/0000-0002-7368-5931"
     affiliation: "University of Sussex, UK; King Khalid University, Saudi Arabia"
 version: "1.0.0"
-date-released: "2026-06-12"
+date-released: "2026-08-29"
 license: MIT
 repository-code: "https://github.com/sf457/REVS-T-RUST"
 keywords:
