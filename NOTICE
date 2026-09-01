@@ -1,0 +1,22 @@
+REVS-T with RUST — third-party components
+==========================================
+
+The MATLAB simulation code in this repository is released under the MIT
+License (see LICENSE). It additionally bundles the third-party components
+listed below, which are governed by their own licenses and are NOT covered
+by the MIT grant above.
+
+---------------------------------------------------------------------------
+1. secp256k1 elliptic curve shared key generation (GUI) 1.0.0
+   Author:  David Hill (2019)
+   Used by: vehicle key-pair generation
+   License: 3-clause BSD, reproduced in full in
+            thirdparty/secp256k1-elliptic-curve-shared-key-generation-gui-1.0.0/license.txt
+   All rights and disclaimers in that notice are retained.
+
+---------------------------------------------------------------------------
+2. +bc/ consortium-ledger emulation helpers
+   Adapted from Aarenstrup's MATLAB "Blockchain Example". The ledger is an
+   emulation used only to record and audit trust state for the experiments;
+   it performs no real mining, consensus, block propagation, or ledger
+   replication.

@@ -19,12 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----------------------------------------------------------------------------
-THIRD-PARTY COMPONENTS
-
-This repository includes the "secp256k1 elliptic curve shared key generation"
-utility by David Hill (2019), used for vehicle key-pair generation. It is
-distributed under the 3-clause BSD license, reproduced in full in
-secp256k1-elliptic-curve-shared-key-generation-gui-1.0.0/license.txt. All
-rights and disclaimers in that notice are retained.
