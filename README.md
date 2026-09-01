@@ -135,8 +135,7 @@ cd results_frozen && sha256sum -c SHA256SUMS.txt     # macOS: shasum -a 256 -c
 ## Data availability
 
 The frozen result sets are in `results_frozen/` with SHA-256 checksums documented in
-[`docs/PROVENANCE.md`](docs/PROVENANCE.md). A public data-release decision (in-repo,
-Git LFS, or derived CSV summaries) is deferred pending supervisor approval.
+[`docs/PROVENANCE.md`](docs/PROVENANCE.md). Released publicly under the MIT license.
 
 ## Third-party code
 
