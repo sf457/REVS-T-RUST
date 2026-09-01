@@ -1,4 +1,4 @@
-# results_frozen/trajectories/ — trajectory records for illustrative figures (PRIVATE)
+# results_frozen/trajectories/ — trajectory records for illustrative figures
 
 Per-scenario reputation-trajectory records backing the single-seed illustrative
 figures of Chapter 5 (phase-shift adaptation traces, cumulative malicious-selection
@@ -12,6 +12,6 @@ Subset committed here (moderate assignment, 50% malicious — the cells the figu
 
 Integrity: `cd results_frozen/trajectories && sha256sum -c SHA256SUMS.txt`.
 
-STATUS: **private / not for public release** until the data-release decision is approved
-(same policy as the parent `results_frozen/`). These records back the illustrative
-figures only; all reported numbers come from the frozen workbooks in `results_frozen/`.
+STATUS: **released publicly under the MIT license** (same as the parent `results_frozen/`).
+These records back the illustrative figures only; all reported numbers come from the
+frozen workbooks in `results_frozen/`.

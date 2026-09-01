@@ -1,12 +1,10 @@
-# results_frozen/ — canonical frozen result sets (PRIVATE)
+# results_frozen/ — canonical frozen result sets
 
 Holds the **frozen result files that back the numbers reported in the thesis**
 (and the REVS-T conference paper). Canonical source of record: reported tables and
 figures come from these files, not regenerated ad hoc.
 
-> STATUS: **private / not for public release yet.** Do not publish until a
-> data-release decision is approved (options later: keep in-repo, Git LFS, or
-> release derived CSV summaries only).
+> STATUS: **released publicly under the MIT license** alongside the simulation code.
 
 ## Naming convention
 `<framework>_<experiment>_<config>_frozen_<YYYY-MM-DD>.<ext>`
